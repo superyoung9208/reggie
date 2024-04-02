@@ -5,13 +5,19 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.reggie.app.common.BaseContext;
 import org.reggie.app.common.R;
+import org.reggie.app.dto.DishDto;
 import org.reggie.app.entity.Dish;
+import org.reggie.app.entity.DishFlavor;
 import org.reggie.app.mapper.DishMapper;
+import org.reggie.app.service.DishFlavorService;
 import org.reggie.app.service.DishService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -21,6 +27,34 @@ public class DishController {
 
     @Autowired
     DishService dishService;
+
+    @Autowired
+    DishFlavorService dishFlavorService;
+
+    @PostMapping
+    public R<String> save(@RequestBody DishDto dishDto) {
+
+        dishService.saveWithFlavor(dishDto);
+        return R.success("保存成功");
+    }
+
+    @PutMapping
+    public R<String> update(@RequestBody DishDto dishDto) {
+        dishService.saveWithFlavor(dishDto);
+        return R.success("更新成功");
+    }
+
+    @GetMapping("/{dishId}")
+    public R<DishDto> getOne(@PathVariable("dishId") Long dishId) {
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Dish::getId, dishId);
+        Dish dish = dishService.getOne(queryWrapper);
+        List<DishFlavor> flavors = dishService.getDishFlavorById(dish.getId());
+        DishDto dishDto = new DishDto();
+        BeanUtils.copyProperties(dish, dishDto);
+        dishDto.setFlavors(flavors);
+        return R.success(dishDto);
+    }
 
     @GetMapping("/page")
     public R<Page> page(int page, int pageSize, String name){
