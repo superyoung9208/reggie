@@ -1,5 +1,6 @@
 package org.reggie.app.entity;
 
+
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
@@ -9,24 +10,20 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-public class Setmeal implements Serializable {
+public class SetmealDish implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
 
-    private String name;
+    private Long setmealId;
 
-    private Long categoryId;
+    private Long dishId;
+
+    private String name;
 
     private BigDecimal price;
 
-    private Integer status;
-
-    private String code;
-
-    private String description;
-
-    private String image;
+    private Integer copies;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;

@@ -21,4 +21,4 @@ mybatis-plus:
       id-type: ASSIGN_ID
 
 reggie:
-  path: '/home/laoyang/Downloads/spring-doc/reggie/src/img/'
+  path: '/Users/yangchao/Pictures/reggieImg/'

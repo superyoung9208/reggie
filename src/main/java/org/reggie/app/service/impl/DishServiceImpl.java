@@ -9,12 +9,10 @@ import org.reggie.app.entity.DishFlavor;
 import org.reggie.app.mapper.DishMapper;
 import org.reggie.app.service.DishFlavorService;
 import org.reggie.app.service.DishService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,10 +22,6 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
     @Autowired
     private DishFlavorService dishFlavorService;
 
-    /**
-     * 新增菜品,同时保存对应的口味数据
-     * @param dishDto
-     */
     @Transactional
     public void saveWithFlavor(DishDto dishDto) {
         if(dishDto.getId() != null) {
@@ -39,7 +33,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
             this.save(dishDto);
         }
         List<DishFlavor> flavors = dishDto.getFlavors();
-        flavors.stream().forEach((item) -> {
+        flavors.forEach((item) -> {
             item.setDishId(dishDto.getId());
         });
         dishFlavorService.saveBatch(flavors);

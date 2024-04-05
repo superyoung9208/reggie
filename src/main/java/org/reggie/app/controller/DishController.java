@@ -1,23 +1,19 @@
 package org.reggie.app.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.reggie.app.common.BaseContext;
 import org.reggie.app.common.R;
 import org.reggie.app.dto.DishDto;
 import org.reggie.app.entity.Dish;
 import org.reggie.app.entity.DishFlavor;
-import org.reggie.app.mapper.DishMapper;
 import org.reggie.app.service.DishFlavorService;
 import org.reggie.app.service.DishService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -78,7 +74,7 @@ public class DishController {
     }
 
     @PostMapping("/status/{status}")
-    public R<String> releaseSell(@PathVariable("status") Integer status,Long ids) {
+    public R<String> releaseSell(@PathVariable("status") Integer status,Long[] ids) {
         LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(Dish::getId, ids);
         List<Dish> dishList =  dishService.list(queryWrapper);
@@ -99,5 +95,16 @@ public class DishController {
         queryWrapper.in(Dish::getId, ids);
         dishService.count(queryWrapper);
         return R.success("删除成功");
+    }
+
+    @GetMapping("/list")
+    public R<List<Dish>> getDishListByCateId(Long categoryId) {
+
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Dish::getCategoryId, categoryId);
+        List<Dish> dishes = dishService.list(queryWrapper);
+        log.info(dishes.toString());
+        log.info(categoryId.toString());
+        return R.success(dishes);
     }
 }
