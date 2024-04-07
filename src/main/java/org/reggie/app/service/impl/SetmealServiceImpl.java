@@ -53,7 +53,6 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
         setmealDishService.remove(queryWrapper);
     }
 
-    @Override
     public String getSetmealCategoryNameById(Long cateId) {
         return categoryService.getById(cateId).getName();
     }
