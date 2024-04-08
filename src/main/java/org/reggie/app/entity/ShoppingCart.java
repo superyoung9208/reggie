@@ -1,5 +1,7 @@
 package org.reggie.app.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -7,7 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-public class shoppingCart implements Serializable {
+public class ShoppingCart implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,8 +29,7 @@ public class shoppingCart implements Serializable {
 
     private BigDecimal amount;
 
-    private Integer isDeleted;
-
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
 }
